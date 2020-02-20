@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class TestController {
 
     @Autowired
+    BCryptPasswordEncoder passwordEncoder;
+
+    @Autowired
     UserRepository userRepository;
 
     @GetMapping("/index")
@@ -22,15 +25,15 @@ public class TestController {
         User user = new User();
         user.setName("abc");
         user.setIsEnabled(true);
-        PasswordEncoder passwordEncoder = passwordEncoder();
+//        PasswordEncoder passwordEncoder = passwordEncoder();
         user.setPassword(passwordEncoder.encode("dummy"));
         user.setUsername("test2");
         userRepository.save(user);
         return "Hello world! : " + user.toString();
     }
 
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+//    public PasswordEncoder passwordEncoder() {
+//        return new BCryptPasswordEncoder();
+//    }
 }
 
