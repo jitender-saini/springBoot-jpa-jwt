@@ -1,15 +1,22 @@
 package in.spring.service;
 
+import in.spring.config.JwtUserDetails;
 import in.spring.repo.dao.UserRepository;
+import in.spring.repo.dao.domain.Role;
 import in.spring.repo.dao.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class JwtUserDetailsService implements UserDetailsService {
+
     @Autowired
     UserRepository userRepository;
 
@@ -18,7 +25,19 @@ public class JwtUserDetailsService implements UserDetailsService {
         System.out.println("-----------------------");
         System.out.println(userRepository.findByUsername(username));
         System.out.println("-----------------------");
-        return userRepository.findByUsername(username);
+        User user = userRepository.findByUsername(username);
+        if (user != null) {
+            List<SimpleGrantedAuthority> grantedAuthorities = new ArrayList<>();
+            for (Role role : user.getRoles()) {
+                grantedAuthorities.add(new SimpleGrantedAuthority(role.getRole()));
+            }
+            JwtUserDetails userDetails = new JwtUserDetails(user.getId(), user.getEmail(), user.getFirstName(),
+                    user.getLastName(), user.getEmail(), user.getPassword(),
+                    grantedAuthorities, true, user.getLastPasswordResetDate());
+            return userDetails;
+        } else {
+            return null;
+        }
     }
 
 //    @Override
