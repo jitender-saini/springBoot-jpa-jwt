@@ -1,15 +1,17 @@
 package in.spring.controller;
 
+import in.spring.repo.dao.RoleRepository;
 import in.spring.repo.dao.UserRepository;
+import in.spring.repo.dao.domain.Role;
 import in.spring.repo.dao.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 
 @RestController
@@ -22,6 +24,9 @@ public class TestController {
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    RoleRepository roleRepository;
+
     @GetMapping("/index")
     public String getWorld() {
         User user = new User();
@@ -30,10 +35,27 @@ public class TestController {
         user.setFirstName("hey");
         user.setLastName("bye");
         user.setLastPasswordResetDate(new Date());
-        user.setRoles();
+        Role adminRole = roleRepository.findByRole("ADMIN");
+        Set<Role> roleSet = new HashSet<>();
+        roleSet.add(adminRole);
+        user.setRoles(roleSet);
         user.setPassword(passwordEncoder.encode("dummy"));
         userRepository.save(user);
         return "Hello world! : " + user.toString();
+    }
+
+    @RequestMapping(value = "roles", method = RequestMethod.GET)
+    public String createRoles() {
+        if (roleRepository.count() == 0) {
+            Role adminRole = new Role();
+            adminRole.setRole("ADMIN");
+            roleRepository.save(adminRole);
+            Role userRole = new Role();
+            userRole.setRole("USER");
+            roleRepository.save(userRole);
+            return "Created Successfully";
+        }
+        return "Already Created.";
     }
 }
 
