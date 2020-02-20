@@ -16,8 +16,11 @@ import java.util.List;
 //@PreAuthorize("isAuthenticated()")
 public class UserController {
 
-    @Autowired
-    UserRepository userRepository;
+    private final UserRepository userRepository;
+
+    public UserController(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
 //    @Secured("ADMIN")

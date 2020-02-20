@@ -1,5 +1,6 @@
-package in.spring.config;
+package in.spring.service;
 
+import in.spring.model.JwtToken;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -8,7 +9,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
-import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -16,8 +16,8 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Component
-public class TokenUtil implements Serializable {
-    private static final long serialVersionUID = -2550185165626007488L;
+public class TokenService {
+
     public static final long JWT_TOKEN_VALIDITY = 5 * 60 * 60;
     @Value("${jwt.secret}")
     private String secret;
@@ -57,6 +57,11 @@ public class TokenUtil implements Serializable {
         System.out.println("----------- authorities: " + authorities);
         claims.put("scope", authorities);
         return doGenerateToken(claims, userDetails.getUsername());
+    }
+
+    public JwtToken generateJwtToken(UserDetails userDetails) {
+        String token = generateToken(userDetails);
+        return JwtToken.bearer(token);
     }
 
     //while creating the token -

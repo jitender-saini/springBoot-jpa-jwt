@@ -1,7 +1,10 @@
 package in.spring.config;
 
 
-import in.spring.service.JwtUserDetailsService;
+import in.spring.filters.JwtAuthenticationProcessingFilter;
+import in.spring.filters.JwtAuthenticationTokenFilter;
+import in.spring.service.LoginSuccessHandler;
+import in.spring.userdetails.JwtUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,25 +16,30 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-//@EnableGlobalMethodSecurity(
-//        securedEnabled = true,
-//        jsr250Enabled = true,
-//        prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-    private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
-    private final JwtUserDetailsService jwtUserDetailsService;
-    private final RequestFilter jwtRequestFilter;
 
-    public WebSecurityConfig(JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint, JwtUserDetailsService jwtUserDetailsService, RequestFilter jwtRequestFilter) {
-        this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
+    private final JwtUserDetailsService jwtUserDetailsService;
+    private final JwtAuthenticationTokenFilter jwtTokenFilter;
+    private final AuthenticationSuccessHandler authenticationSuccessHandler;
+    private final AuthenticationFailureHandler failureHandler;
+
+    public WebSecurityConfig(JwtUserDetailsService jwtUserDetailsService,
+                             JwtAuthenticationTokenFilter jwtTokenFilter,
+                             AuthenticationSuccessHandler authenticationSuccessHandler,
+                             AuthenticationFailureHandler failureHandler) {
         this.jwtUserDetailsService = jwtUserDetailsService;
-        this.jwtRequestFilter = jwtRequestFilter;
+        this.jwtTokenFilter = jwtTokenFilter;
+        this.authenticationSuccessHandler = authenticationSuccessHandler;
+        this.failureHandler = failureHandler;
     }
 
     @Autowired
@@ -40,8 +48,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public BCryptPasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+    public PasswordEncoder passwordEncoder() {
+        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
     @Bean
@@ -50,21 +58,26 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return super.authenticationManagerBean();
     }
 
+    @Bean
+    public JwtAuthenticationProcessingFilter jwtAuthenticationProcessingFilter() throws Exception {
+        JwtAuthenticationProcessingFilter filter = new JwtAuthenticationProcessingFilter(authenticationManagerBean(),
+                authenticationSuccessHandler, failureHandler);
+        filter.afterPropertiesSet();
+        return filter;
+    }
+
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
-                .csrf()
-                .disable()
                 .authorizeRequests()
-                .antMatchers("/authenticate", "/test/**").permitAll()
-                .anyRequest()
-                .authenticated()
-                .and()
-                .exceptionHandling()
-                .authenticationEntryPoint(jwtAuthenticationEntryPoint)
+                .anyRequest().authenticated()
                 .and()
                 .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .csrf().disable();
+
+        httpSecurity.addFilterBefore(jwtAuthenticationProcessingFilter(), UsernamePasswordAuthenticationFilter.class);
+        httpSecurity.addFilterBefore(jwtTokenFilter, JwtAuthenticationProcessingFilter.class);
     }
 }

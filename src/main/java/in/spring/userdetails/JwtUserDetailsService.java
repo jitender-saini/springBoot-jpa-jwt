@@ -1,6 +1,5 @@
-package in.spring.service;
+package in.spring.userdetails;
 
-import in.spring.config.JwtUserDetails;
 import in.spring.repo.dao.UserRepository;
 import in.spring.repo.dao.domain.Role;
 import in.spring.repo.dao.domain.User;
@@ -17,8 +16,11 @@ import java.util.List;
 @Service
 public class JwtUserDetailsService implements UserDetailsService {
 
-    @Autowired
-    UserRepository userRepository;
+    private final UserRepository userRepository;
+
+    public JwtUserDetailsService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -32,20 +34,13 @@ public class JwtUserDetailsService implements UserDetailsService {
             for (Role role : user.getRoles()) {
                 grantedAuthorities.add(new SimpleGrantedAuthority(role.getRole()));
             }
-            JwtUserDetails userDetails = new JwtUserDetails(user.getId(), user.getEmail(), user.getFirstName(),
+            return new JWTUser(user.getId(), user.getEmail(), user.getFirstName(),
                     user.getLastName(), user.getEmail(), user.getPassword(),
                     grantedAuthorities, true, user.getLastPasswordResetDate());
-            return userDetails;
         } else {
-            return null;
+            // Must throw exception
+            throw new UsernameNotFoundException(username + "doesn't exists in the system");
         }
     }
-
-//    @Override
-//    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-//        User user = userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("User not found: " + username));
-//        GrantedAuthority authority = new SimpleGrantedAuthority(user.getRole().name());
-//        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), Arrays.asList(authority));
-//    }
 
 }
