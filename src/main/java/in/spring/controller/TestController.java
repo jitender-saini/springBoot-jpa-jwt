@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Date;
+
 
 @RestController
 @RequestMapping("/test")
@@ -23,17 +25,15 @@ public class TestController {
     @GetMapping("/index")
     public String getWorld() {
         User user = new User();
-        user.setName("abc");
-        user.setIsEnabled(true);
-//        PasswordEncoder passwordEncoder = passwordEncoder();
+        user.setEmail("abc@gmail.com");
+        user.setActive(true);
+        user.setFirstName("hey");
+        user.setLastName("bye");
+        user.setLastPasswordResetDate(new Date());
+        user.setRoles();
         user.setPassword(passwordEncoder.encode("dummy"));
-        user.setUsername("test2");
         userRepository.save(user);
         return "Hello world! : " + user.toString();
     }
-
-//    public PasswordEncoder passwordEncoder() {
-//        return new BCryptPasswordEncoder();
-//    }
 }
 

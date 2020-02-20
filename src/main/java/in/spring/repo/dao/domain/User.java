@@ -44,7 +44,7 @@ public class User {
     private String lastName;
 
     @Column(name = "active")
-    private int active;
+    private Boolean active;
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
@@ -93,11 +93,11 @@ public class User {
         this.email = email;
     }
 
-    public int getActive() {
+    public Boolean getActive() {
         return active;
     }
 
-    public void setActive(int active) {
+    public void setActive(Boolean active) {
         this.active = active;
     }
 
