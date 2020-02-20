@@ -23,7 +23,6 @@ public class User implements UserDetails {
     private String username;
     private String password;
     Boolean isEnabled;
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return null;

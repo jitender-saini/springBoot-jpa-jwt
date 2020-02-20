@@ -10,8 +10,12 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class JwtUserDetailsService implements UserDetailsService {
-    @Autowired
-    UserRepository userRepository;
+
+    final UserRepository userRepository;
+
+    public JwtUserDetailsService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -20,4 +24,12 @@ public class JwtUserDetailsService implements UserDetailsService {
         System.out.println("-----------------------");
         return userRepository.findByUsername(username);
     }
+
+//    @Override
+//    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+//        User user = userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("User not found: " + username));
+//        GrantedAuthority authority = new SimpleGrantedAuthority(user.getRole().name());
+//        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), Arrays.asList(authority));
+//    }
+
 }
