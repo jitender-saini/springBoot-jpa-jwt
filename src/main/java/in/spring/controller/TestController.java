@@ -29,19 +29,22 @@ public class TestController {
 
     @GetMapping("/index")
     public String getWorld() {
-        User user = new User();
-        user.setEmail("abc@gmail.com");
-        user.setActive(true);
-        user.setFirstName("hey");
-        user.setLastName("bye");
-        user.setLastPasswordResetDate(new Date());
-        Role adminRole = roleRepository.findByRole("ADMIN");
-        Set<Role> roleSet = new HashSet<>();
-        roleSet.add(adminRole);
-        user.setRoles(roleSet);
-        user.setPassword(passwordEncoder.encode("dummy"));
-        userRepository.save(user);
-        return "Hello world! : " + user.toString();
+        if (userRepository.count() == 0) {
+            User user = new User();
+            user.setEmail("abc@gmail.com");
+            user.setActive(true);
+            user.setFirstName("hey");
+            user.setLastName("bye");
+            user.setLastPasswordResetDate(new Date());
+            Role adminRole = roleRepository.findByRole("ADMIN");
+            Set<Role> roleSet = new HashSet<>();
+            roleSet.add(adminRole);
+            user.setRoles(roleSet);
+            user.setPassword(passwordEncoder.encode("dummy"));
+            userRepository.save(user);
+            return "Hello world! : " + user.toString();
+        }
+        return "Already created";
     }
 
     @RequestMapping(value = "roles", method = RequestMethod.GET)
@@ -53,6 +56,7 @@ public class TestController {
             Role userRole = new Role();
             userRole.setRole("USER");
             roleRepository.save(userRole);
+            getWorld();
             return "Created Successfully";
         }
         return "Already Created.";
