@@ -4,6 +4,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
@@ -12,6 +13,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Component
 public class TokenUtil implements Serializable {
@@ -49,6 +51,11 @@ public class TokenUtil implements Serializable {
     //generate token for user
     public String generateToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
+        String authorities = userDetails.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.joining(","));
+        System.out.println("----------- authorities: " + authorities);
+        claims.put("scope", authorities);
         return doGenerateToken(claims, userDetails.getUsername());
     }
 
@@ -58,9 +65,11 @@ public class TokenUtil implements Serializable {
 //3. According to JWS Compact Serialization(https://tools.ietf.org/html/draft-ietf-jose-json-web-signature-41#section-3.1)
 //   compaction of the JWT to a URL-safe string
     private String doGenerateToken(Map<String, Object> claims, String subject) {
+//        String authorities =
         return Jwts.builder()
                 .setClaims(claims)
                 .setSubject(subject)
+//                .claim("scopes","[ADMIN]")
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY * 1000))
                 .signWith(SignatureAlgorithm.HS512, secret)
@@ -74,7 +83,7 @@ public class TokenUtil implements Serializable {
         System.out.println("userDetails.getUsername" + userDetails.getUsername());
         System.out.println("username" + (username));
         System.out.println("equals" + username.equals(userDetails.getUsername()));
-        System.out.println("isExpired" + !isTokenExpired(token));
+        System.out.println("isExpired" + isTokenExpired(token));
         System.out.println("66666666666666666666666666666666666666666666666");
         return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }

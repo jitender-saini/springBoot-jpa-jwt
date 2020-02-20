@@ -12,6 +12,8 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -32,7 +34,10 @@ public class AuthenticationController {
 
     @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
     public ResponseEntity<?> createAuthenticationToken(@RequestBody Request authenticationRequest) throws Exception {
-        authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
+        Authentication authentication = authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
         System.out.println("********************************************************");
         System.out.println("username: " + authenticationRequest.getUsername());
         final UserDetails userDetails = userDetailsService
@@ -41,9 +46,9 @@ public class AuthenticationController {
         System.out.println("********************************************************");
         return ResponseEntity.ok(new Response(token));
     }
-    private void authenticate(String username, String password) throws Exception {
+    private Authentication authenticate(String username, String password) throws Exception {
         try {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+           return authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
         } catch (DisabledException e) {
             throw new Exception("USER_DISABLED", e);
         } catch (BadCredentialsException e) {
