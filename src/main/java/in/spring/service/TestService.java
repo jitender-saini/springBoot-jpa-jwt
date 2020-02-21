@@ -1,7 +1,7 @@
 package in.spring.service;
 
-import in.spring.repo.dao.RoleRepository;
-import in.spring.repo.dao.UserRepository;
+import in.spring.repo.dao.repository.RoleRepository;
+import in.spring.repo.dao.repository.UserRepository;
 import in.spring.repo.dao.domain.Role;
 import in.spring.repo.dao.domain.User;
 import org.springframework.security.crypto.password.PasswordEncoder;

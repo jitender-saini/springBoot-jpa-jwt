@@ -53,7 +53,7 @@ public class User {
     @Column(name = "last_password_reset_date")
     private Date lastPasswordResetDate;
 
-    public int getId() {
+    /*public int getId() {
         return id;
     }
 
@@ -115,5 +115,5 @@ public class User {
 
     public void setLastPasswordResetDate(Date lastPasswordResetDate) {
         this.lastPasswordResetDate = lastPasswordResetDate;
-    }
+    }*/
 }

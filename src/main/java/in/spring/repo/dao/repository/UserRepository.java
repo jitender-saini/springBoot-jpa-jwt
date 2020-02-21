@@ -1,4 +1,4 @@
-package in.spring.repo.dao;
+package in.spring.repo.dao.repository;
 
 import in.spring.repo.dao.domain.User;
 import org.springframework.data.repository.CrudRepository;

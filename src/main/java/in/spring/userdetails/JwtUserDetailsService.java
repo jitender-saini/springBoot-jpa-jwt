@@ -1,9 +1,8 @@
 package in.spring.userdetails;
 
-import in.spring.repo.dao.UserRepository;
+import in.spring.repo.dao.repository.UserRepository;
 import in.spring.repo.dao.domain.Role;
 import in.spring.repo.dao.domain.User;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -24,10 +23,6 @@ public class JwtUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        System.out.println("-----------------------");
-        System.out.println(username);
-        System.out.println(userRepository.findByEmail(username));
-        System.out.println("-----------------------");
         User user = userRepository.findByEmail(username);
         if (user != null) {
             List<SimpleGrantedAuthority> grantedAuthorities = new ArrayList<>();
