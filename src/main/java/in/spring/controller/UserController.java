@@ -11,7 +11,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/user")
-//@PreAuthorize("isAuthenticated()")
 public class UserController {
 
     private final UserRepository userRepository;
@@ -21,8 +20,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
-//    @Secured("ADMIN")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('USER')")
     public List<User> list() {
         return userRepository.findAll();
     }
