@@ -1,8 +1,8 @@
 package in.spring.userdetails;
 
-import in.spring.repo.dao.repository.UserRepository;
-import in.spring.repo.dao.domain.Role;
-import in.spring.repo.dao.domain.User;
+import in.spring.repository.UserRepository;
+import in.spring.domain.Role;
+import in.spring.domain.User;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

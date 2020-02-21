@@ -1,10 +1,9 @@
-package in.spring.repo.dao.repository;
+package in.spring.repository;
 
-import in.spring.repo.dao.domain.User;
+import in.spring.domain.User;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface UserRepository extends CrudRepository<User, Long> {
     public User findByEmail(String name);

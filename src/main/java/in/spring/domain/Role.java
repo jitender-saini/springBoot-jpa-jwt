@@ -1,4 +1,4 @@
-package in.spring.repo.dao.domain;
+package in.spring.domain;
 
 import javax.persistence.*;
 import java.util.HashSet;

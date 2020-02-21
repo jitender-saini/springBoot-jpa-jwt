@@ -1,7 +1,6 @@
-package in.spring.repo.dao.repository;
+package in.spring.repository;
 
-import in.spring.repo.dao.domain.Role;
-import in.spring.repo.dao.domain.User;
+import in.spring.domain.Role;
 import org.springframework.data.repository.CrudRepository;
 
 public interface RoleRepository extends CrudRepository<Role, Long> {

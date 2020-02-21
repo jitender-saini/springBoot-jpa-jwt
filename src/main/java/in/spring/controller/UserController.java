@@ -1,7 +1,7 @@
 package in.spring.controller;
 
-import in.spring.repo.dao.repository.UserRepository;
-import in.spring.repo.dao.domain.User;
+import in.spring.repository.UserRepository;
+import in.spring.domain.User;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
