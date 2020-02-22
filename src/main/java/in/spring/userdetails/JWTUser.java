@@ -9,7 +9,7 @@ import java.util.Date;
 
 public class JWTUser implements UserDetails {
 
-    private final Integer id;
+    private final Long id;
     private final String username;
     private final String firstname;
     private final String lastname;
@@ -20,15 +20,14 @@ public class JWTUser implements UserDetails {
     private final Date lastPasswordResetDate;
 
     public JWTUser(
-            Integer id,
+            Long id,
             String username,
             String firstname,
             String lastname,
             String email,
             String password, Collection<? extends GrantedAuthority> authorities,
             boolean enabled,
-            Date lastPasswordResetDate
-    ) {
+            Date lastPasswordResetDate) {
         this.id = id;
         this.username = username;
         this.firstname = firstname;
@@ -41,7 +40,7 @@ public class JWTUser implements UserDetails {
     }
 
     @JsonIgnore
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 

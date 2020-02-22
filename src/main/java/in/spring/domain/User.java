@@ -1,6 +1,5 @@
 package in.spring.domain;
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -22,7 +21,7 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    private Long id;
 
     @Email(message = "*Please provide a valid Email")
     @NotEmpty(message = "*Please provide an email")

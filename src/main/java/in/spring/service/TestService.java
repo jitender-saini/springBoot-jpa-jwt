@@ -11,6 +11,9 @@ import javax.transaction.Transactional;
 import java.util.Collections;
 import java.util.Date;
 
+import static in.spring.util.Constants.ADMIN_ROLE;
+import static in.spring.util.Constants.USER_ROLE;
+
 @Service
 @Transactional
 public class TestService {
@@ -28,12 +31,12 @@ public class TestService {
     }
 
     public void createRoles() {
-        createRole("ROLE_ADMIN", "ROLE_USER");
+        createRole(ADMIN_ROLE, USER_ROLE);
     }
 
     public void createUsers() {
-        createUser("admin@gmail.com", "ROLE_ADMIN");
-        createUser("user@gmail.com", "ROLE_USER");
+        createUser("admin@gmail.com", ADMIN_ROLE);
+        createUser("user@gmail.com", USER_ROLE);
     }
 
     private void createRole(String... roles) {
