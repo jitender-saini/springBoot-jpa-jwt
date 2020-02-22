@@ -1,6 +1,6 @@
 package in.spring;
 
-import in.spring.service.TestService;
+import in.spring.service.BootstrapService;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -14,10 +14,10 @@ public class SpringBootJpaJwtApplication {
     }
 
     @Bean
-    public ApplicationRunner seedData(TestService testService) {
+    public ApplicationRunner seedData(BootstrapService bootstrapService) {
         return args -> {
-            testService.createRoles();
-            testService.createUsers();
+            bootstrapService.createRoles();
+            bootstrapService.createUsers();
         };
     }
 }

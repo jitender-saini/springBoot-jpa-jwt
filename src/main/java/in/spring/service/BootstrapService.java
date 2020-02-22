@@ -16,7 +16,7 @@ import static in.spring.util.Constants.USER_ROLE;
 
 @Service
 @Transactional
-public class TestService {
+public class BootstrapService {
 
     private final PasswordEncoder passwordEncoder;
 
@@ -24,7 +24,7 @@ public class TestService {
 
     private final RoleRepository roleRepository;
 
-    public TestService(PasswordEncoder passwordEncoder, UserRepository userRepository, RoleRepository roleRepository) {
+    public BootstrapService(PasswordEncoder passwordEncoder, UserRepository userRepository, RoleRepository roleRepository) {
         this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
