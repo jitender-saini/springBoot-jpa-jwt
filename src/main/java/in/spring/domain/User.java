@@ -1,6 +1,9 @@
 package in.spring.domain;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
@@ -11,7 +14,9 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-@Data
+@NoArgsConstructor
+@Getter
+@Setter
 @Entity
 public class User {
 
