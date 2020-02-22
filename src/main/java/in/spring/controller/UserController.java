@@ -5,6 +5,8 @@ import in.spring.model.vo.UserVO;
 import in.spring.repository.UserRepository;
 import in.spring.domain.User;
 import in.spring.service.UserService;
+import in.spring.util.Constants;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,7 +27,8 @@ public class UserController {
     }
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
-    @PreAuthorize("hasRole('ROLE_USER')")
+//    @PreAuthorize("hasRole('ROLE_USER')")
+    @Secured(Constants.ADMIN_ROLE)
     public List<UserVO> list() {
         List<User> users = userRepository.findAll();
         return users.stream().map(this::convertToDto).collect(Collectors.toList());
