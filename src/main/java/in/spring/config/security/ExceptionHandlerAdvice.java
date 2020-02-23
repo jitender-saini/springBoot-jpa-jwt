@@ -1,6 +1,5 @@
-package in.spring.controller;
+package in.spring.config.security;
 
-import in.spring.model.ErrorDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;

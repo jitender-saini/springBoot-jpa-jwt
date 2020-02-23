@@ -1,6 +1,6 @@
 package in.spring;
 
-import in.spring.service.BootstrapService;
+import in.spring.config.security.service.BootstrapService;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

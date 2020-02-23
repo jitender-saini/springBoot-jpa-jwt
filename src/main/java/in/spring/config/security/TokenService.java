@@ -1,6 +1,6 @@
-package in.spring.service;
+package in.spring.config.security;
 
-import in.spring.model.JwtToken;
+import in.spring.config.security.JwtToken;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;

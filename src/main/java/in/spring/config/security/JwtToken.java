@@ -1,4 +1,4 @@
-package in.spring.model;
+package in.spring.config.security;
 
 public class JwtToken {
 

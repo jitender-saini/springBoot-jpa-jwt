@@ -1,7 +1,6 @@
-package in.spring.service;
+package in.spring.config.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import in.spring.model.JwtToken;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;

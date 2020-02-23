@@ -4,10 +4,9 @@ import in.spring.model.co.UserCO;
 import in.spring.model.vo.UserVO;
 import in.spring.repository.UserRepository;
 import in.spring.domain.User;
-import in.spring.service.UserService;
+import in.spring.config.security.service.UserService;
 import in.spring.util.Constants;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;

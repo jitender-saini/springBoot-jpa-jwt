@@ -1,4 +1,4 @@
-package in.spring.service;
+package in.spring.config.security.service;
 
 import in.spring.repository.RoleRepository;
 import in.spring.repository.UserRepository;

@@ -1,7 +1,7 @@
-package in.spring.service;
+package in.spring.config.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import in.spring.model.ErrorDto;
+import in.spring.config.security.ErrorDto;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
