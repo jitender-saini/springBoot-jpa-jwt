@@ -1,4 +1,4 @@
-package in.spring.userdetails;
+package in.spring.config.security.userdetails;
 
 import in.spring.repository.UserRepository;
 import in.spring.domain.Role;

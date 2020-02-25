@@ -1,7 +1,7 @@
 package in.spring.config.security.filters;
 
 import in.spring.config.security.TokenService;
-import in.spring.userdetails.JwtUserDetailsService;
+import in.spring.config.security.userdetails.JwtUserDetailsService;
 import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;

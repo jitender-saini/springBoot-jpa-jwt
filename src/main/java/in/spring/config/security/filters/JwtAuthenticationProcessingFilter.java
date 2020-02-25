@@ -1,7 +1,7 @@
 package in.spring.config.security.filters;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import in.spring.config.security.RequestDto;
+import in.spring.config.security.model.RequestDto;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;

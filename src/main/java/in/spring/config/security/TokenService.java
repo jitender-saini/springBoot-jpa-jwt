@@ -18,7 +18,8 @@ import java.util.stream.Collectors;
 @Component
 public class TokenService {
 
-    public static final long JWT_TOKEN_VALIDITY = 5 * 60 * 60;
+    // 24 hours
+    public static final long JWT_TOKEN_VALIDITY = 24 * 60 * 60;
     @Value("${jwt.secret}")
     private String secret;
 

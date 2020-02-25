@@ -1,4 +1,4 @@
-package in.spring.config.security.service;
+package in.spring.service;
 
 import in.spring.domain.Role;
 import in.spring.domain.User;

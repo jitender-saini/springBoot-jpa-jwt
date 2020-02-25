@@ -3,7 +3,7 @@ package in.spring.config.security;
 
 import in.spring.config.security.filters.JwtAuthenticationProcessingFilter;
 import in.spring.config.security.filters.JwtAuthenticationTokenFilter;
-import in.spring.userdetails.JwtUserDetailsService;
+import in.spring.config.security.userdetails.JwtUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

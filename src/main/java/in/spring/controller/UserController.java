@@ -4,14 +4,15 @@ import in.spring.model.co.UserCO;
 import in.spring.model.vo.UserVO;
 import in.spring.repository.UserRepository;
 import in.spring.domain.User;
-import in.spring.config.security.service.UserService;
-import in.spring.util.Constants;
+import in.spring.service.UserService;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static in.spring.util.Constants.*;
 
 @RestController
 @RequestMapping("/user")
@@ -27,7 +28,7 @@ public class UserController {
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
 //    @PreAuthorize("hasRole('ROLE_USER')")
-    @Secured(Constants.ADMIN_ROLE)
+    @Secured(ADMIN_ROLE)
     public List<UserVO> list() {
         List<User> users = userRepository.findAll();
         return users.stream().map(this::convertToDto).collect(Collectors.toList());

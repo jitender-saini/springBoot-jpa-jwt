@@ -1,4 +1,4 @@
-package in.spring.config.security.service;
+package in.spring.service;
 
 import in.spring.repository.RoleRepository;
 import in.spring.repository.UserRepository;
@@ -11,8 +11,7 @@ import javax.transaction.Transactional;
 import java.util.Collections;
 import java.util.Date;
 
-import static in.spring.util.Constants.ADMIN_ROLE;
-import static in.spring.util.Constants.USER_ROLE;
+import static in.spring.util.Constants.*;
 
 @Service
 @Transactional

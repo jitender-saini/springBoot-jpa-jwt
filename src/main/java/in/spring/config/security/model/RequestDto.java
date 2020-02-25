@@ -1,4 +1,4 @@
-package in.spring.config.security;
+package in.spring.config.security.model;
 
 import org.springframework.util.StringUtils;
 
