@@ -27,8 +27,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
-//    @PreAuthorize("hasRole('ROLE_USER')")
-    @Secured(ADMIN_ROLE)
+    @Secured({ADMIN_ROLE,DEVELOPER_ROLE})
     public List<UserVO> list() {
         List<User> users = userRepository.findAll();
         return users.stream().map(this::convertToDto).collect(Collectors.toList());
