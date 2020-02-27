@@ -22,7 +22,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Objects;
 
 @RestController
-@CrossOrigin(origins = {"http://localhost:3000"})
 public class AuthenticationController {
 
     @Value("${jwt.http.request.header}")
