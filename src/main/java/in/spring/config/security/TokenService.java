@@ -1,9 +1,11 @@
 package in.spring.config.security;
 
-import in.spring.config.security.JwtToken;
+import in.spring.config.security.model.JwtTokenResponse;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Clock;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.impl.DefaultClock;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,13 +20,25 @@ import java.util.stream.Collectors;
 @Component
 public class TokenService {
 
-    // 24 hours
-    public static final long JWT_TOKEN_VALIDITY = 24 * 60 * 60;
+    private Clock clock = DefaultClock.INSTANCE;
+
     @Value("${jwt.secret}")
     private String secret;
 
+    @Value("${jwt.expiration.in.seconds}")
+    private Long expiration;
+
     public String getUsernameFromToken(String token) {
         return getClaimFromToken(token, Claims::getSubject);
+    }
+
+    public Date getIssuedAtDateFromToken(String token) {
+        return getClaimFromToken(token, Claims::getIssuedAt);
+    }
+
+    private Boolean ignoreTokenExpiration(String token) {
+        // here you specify tokens, for that the expiration is ignored
+        return false;
     }
 
     public Date getExpirationDateFromToken(String token) {
@@ -54,17 +68,20 @@ public class TokenService {
         return doGenerateToken(claims, userDetails.getUsername());
     }
 
-    public JwtToken generateJwtToken(UserDetails userDetails) {
+    public JwtTokenResponse generateJwtToken(UserDetails userDetails) {
         String token = generateToken(userDetails);
-        return JwtToken.bearer(token);
+        return JwtTokenResponse.bearer(token);
     }
 
     private String doGenerateToken(Map<String, Object> claims, String subject) {
+        final Date createdDate = clock.now();
+        final Date expirationDate = calculateExpirationDate(createdDate);
+
         return Jwts.builder()
                 .setClaims(claims)
                 .setSubject(subject)
-                .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY * 1000))
+                .setIssuedAt(createdDate)
+                .setExpiration(expirationDate)
                 .signWith(SignatureAlgorithm.HS512, secret)
                 .compact();
     }
@@ -72,5 +89,22 @@ public class TokenService {
     public Boolean validateToken(String token, UserDetails userDetails) {
         final String username = getUsernameFromToken(token);
         return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+    }
+
+    public Boolean canTokenBeRefreshed(String token) {
+        return (!isTokenExpired(token) || ignoreTokenExpiration(token));
+    }
+
+    public String refreshToken(String token) {
+        final Date createdDate = clock.now();
+        final Date expirationDate = calculateExpirationDate(createdDate);
+        final Claims claims = getAllClaimsFromToken(token);
+        claims.setIssuedAt(createdDate);
+        claims.setExpiration(expirationDate);
+        return Jwts.builder().setClaims(claims).signWith(SignatureAlgorithm.HS512, secret).compact();
+    }
+
+    private Date calculateExpirationDate(Date createdDate) {
+        return new Date(createdDate.getTime() + expiration * 1000);
     }
 }

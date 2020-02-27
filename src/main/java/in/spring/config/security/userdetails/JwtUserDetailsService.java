@@ -29,7 +29,7 @@ public class JwtUserDetailsService implements UserDetailsService {
             for (Role role : user.getRoles()) {
                 grantedAuthorities.add(new SimpleGrantedAuthority(role.getRole()));
             }
-            return new JWTUser(user.getId(), user.getEmail(), user.getFirstName(),
+            return new JwtUserDetails(user.getId(), user.getEmail(), user.getFirstName(),
                     user.getLastName(), user.getEmail(), user.getPassword(),
                     grantedAuthorities, true, user.getLastPasswordResetDate());
         } else {

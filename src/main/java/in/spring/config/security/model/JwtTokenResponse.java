@@ -1,17 +1,17 @@
-package in.spring.config.security;
+package in.spring.config.security.model;
 
-public class JwtToken {
+public class JwtTokenResponse {
 
     private String access_token;
     private String type;
 
-    public JwtToken(String access_token, String type) {
+    public JwtTokenResponse(String access_token, String type) {
         this.access_token = access_token;
         this.type = type;
     }
 
-    public static JwtToken bearer(String access_token) {
-        return new JwtToken(access_token, "Bearer");
+    public static JwtTokenResponse bearer(String access_token) {
+        return new JwtTokenResponse(access_token, "Bearer");
     }
 
     public String getAccess_token() {

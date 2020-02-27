@@ -7,7 +7,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.Date;
 
-public class JWTUser implements UserDetails {
+public class JwtUserDetails implements UserDetails {
 
     private final Long id;
     private final String username;
@@ -19,7 +19,7 @@ public class JWTUser implements UserDetails {
     private final boolean enabled;
     private final Date lastPasswordResetDate;
 
-    public JWTUser(
+    public JwtUserDetails(
             Long id,
             String username,
             String firstname,

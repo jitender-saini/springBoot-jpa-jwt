@@ -1,7 +1,7 @@
 package in.spring.config.security.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import in.spring.config.security.JwtToken;
+import in.spring.config.security.model.JwtTokenResponse;
 import in.spring.config.security.TokenService;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
@@ -27,7 +27,7 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-        JwtToken token = tokenService.generateJwtToken((UserDetails) authentication.getPrincipal());
+        JwtTokenResponse token = tokenService.generateJwtToken((UserDetails) authentication.getPrincipal());
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         objectMapper.writeValue(response.getOutputStream(), token);
     }
