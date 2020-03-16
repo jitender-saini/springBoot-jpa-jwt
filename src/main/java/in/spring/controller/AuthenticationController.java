@@ -21,6 +21,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Objects;
 
+import static in.spring.util.Constants.LOGIN_URI;
+
 @RestController
 public class AuthenticationController {
 
@@ -42,7 +44,7 @@ public class AuthenticationController {
     @Autowired
     private AuthenticationManager authenticationManager;
 
-    @PostMapping(value = "${jwt.get.token.uri}")
+    @PostMapping(value = LOGIN_URI)
     public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtTokenRequest authenticationRequest) throws Exception {
         authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
         final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());

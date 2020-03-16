@@ -22,6 +22,8 @@ import org.springframework.security.web.authentication.AuthenticationFailureHand
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import static in.spring.util.Constants.LOGIN_URI;
+
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(securedEnabled = true)
@@ -70,7 +72,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
                 .authorizeRequests()
-                .antMatchers("/user/register", "/authenticate").permitAll()
+                .antMatchers(LOGIN_URI, "/user/register").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .sessionManagement()

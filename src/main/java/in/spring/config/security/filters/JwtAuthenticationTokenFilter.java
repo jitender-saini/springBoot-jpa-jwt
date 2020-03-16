@@ -16,6 +16,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+import static in.spring.util.Constants.LOGIN_URI;
+
 @Component
 public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
 
@@ -33,6 +35,11 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
         final String requestTokenHeader = request.getHeader("Authorization");
         String username = null;
         String jwtToken = null;
+
+        if (request.getRequestURI().equals("/login")) {
+            return;
+        }
+
         if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
             jwtToken = requestTokenHeader.substring(7);
             try {
@@ -42,9 +49,10 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
             } catch (ExpiredJwtException e) {
                 System.out.println("JWT Token has expired");
             }
-        } else {
-            logger.warn("JWT Token does not begin with Bearer String");
+        } else if (!request.getRequestURI().equals(LOGIN_URI)) {
+            logger.warn("JWT Token does not begin with Bearer String!");
         }
+
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = this.jwtUserDetailsService.loadUserByUsername(username);
             if (tokenService.validateToken(jwtToken, userDetails)) {
