@@ -11,18 +11,24 @@ public class RequestLoggingFilter extends AbstractRequestLoggingFilter {
 
     @Override
     protected boolean shouldLog(HttpServletRequest request) {
-        return logger.isDebugEnabled();
+        String reqUri = request.getRequestURI();
+        String contextPath = request.getContextPath();
+        if (reqUri.equals(contextPath + LOGIN_URI) ||
+                reqUri.equals(contextPath + "/v1/user/update-password") ||
+                reqUri.equals(contextPath + "/v1/user/account/reset-password") ||
+                reqUri.equals(contextPath + "/actuator/health")) {
+            return false;
+        }
+        return true;
     }
 
     @Override
     protected void beforeRequest(HttpServletRequest request, String message) {
-//        logger.debug(message);
+        logger.info(message);
     }
 
     @Override
     protected void afterRequest(HttpServletRequest request, String message) {
-        if (!request.getRequestURI().equals(LOGIN_URI)) {
-            logger.debug(message);
-        }
+        logger.info(message);
     }
 }
